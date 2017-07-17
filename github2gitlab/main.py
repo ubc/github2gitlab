@@ -492,7 +492,7 @@ class GitHub2GitLab(object):
         for (key, value) in six.iteritems(query):
             if key == 'private_token':
                 continue
-            if value != merge.get(key):
+            if value.strip() != merge.get(key).strip():
                 raise ValueError(url + " " + key + " expected " +
                                  value + " but is " + merge.get(key, 'None'))
         return merge
@@ -527,7 +527,7 @@ class GitHub2GitLab(object):
                 key = 'state'
                 value = self.STATE_EVENT2MERGE_STATE[updates['state_event']]
             result_value = result.get(key) or ''
-            if value != result_value:
+            if value.strip() != result_value.strip():
                 url = (g['host'] + "/" + parse.unquote(g['repo']) + "/" +
                        "merge_requests/" + str(result['iid']))
                 raise ValueError("{url}: {key} value expected to be {value}"
