@@ -1,6 +1,10 @@
 github2gitlab
 =============
 
+NOTE: This is based on the work of https://pypi.python.org/pypi/github2gitlab.
+However, the original repo http://workbench.dachary.org/dachary/github2gitlab 
+is not accessible anymore. This is a clone with some improvements.
+
 github2gitlab is a command line tool to mirror projects from GitHub
 to GitLab. It does the following, in sequence:
 
