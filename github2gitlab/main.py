@@ -163,8 +163,11 @@ class GitHub2GitLab(object):
         return "".join(lines)
 
     def gitlab_create_remote(self, repo):
+        # when using access token, gitlab doesn't care the username
+        url = self.gitlab['git'].replace(
+            'https://', 'https://user:{}@'.format(self.gitlab['token']))
         repo.create_remote('gitlab',
-                           self.gitlab['git'] + "/" +
+                           url + ("/" if url.startswith('http') else ':') +
                            self.gitlab['namespace'] + "/" +
                            self.gitlab['name'] + ".git")
 
@@ -240,8 +243,12 @@ class GitHub2GitLab(object):
 
     def add_key(self):
         "Add ssh key to gitlab if necessary"
-        with open(self.args.ssh_public_key) as f:
-            public_key = f.read().strip()
+        try:
+            with open(self.args.ssh_public_key) as f:
+                public_key = f.read().strip()
+        except:
+            log.debug("No key found in {}".format(self.args.ssh_public_key))
+            return None
         g = self.gitlab
         url = g['url'] + "/user/keys"
         query = {'private_token': g['token']}
