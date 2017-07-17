@@ -1,0 +1,85 @@
+CHANGES
+=======
+
+1.5.5
+-----
+
+* version 1.5.5
+* relax GitPython requirements
+* version 1.5.4
+* relax request requirements
+
+1.5.3
+-----
+
+* version 1.5.3
+* reduce the number of branches by only pushing merge
+
+1.5.2
+-----
+
+* version 1.5.2
+* mirror: only update gitlab when it makes sense
+* add --skip-pull-request to not mirror the pull requests
+* have sh display output continuously
+* restrict level control to the module
+* switch from testtools to pytest
+* fix flake8 errors
+* allow tox arguments override
+* integration tests need HOME to assert default key location
+* rename pep8 tox env to flake8
+* fix merge_request_fail
+* upgrade gitlab setup script to newer gitlab
+* version 1.5.2
+* update the developer instructions in the README
+
+1.5.1
+-----
+
+* version 1.5.1
+* example script to setup a local gitlab
+* relax pbr requirements
+* fix integration tests example
+* intergration tests must use the GitHub2GitLab.factory
+
+1.5.0
+-----
+
+* release 1.5.0
+* increase test verbosity
+* make it python3 compatible
+
+1.4.0
+-----
+
+* release 1.4.0
+* add factory method
+* more precise build instructions
+
+1.3.0
+-----
+
+* release 1.3.0
+
+1.2.0
+-----
+
+* release 1.2.0
+* expose the argument parser
+* add missing space between fetch refs
+* Update merge requests if necessary, add --ignore-closed
+* Implement conversion from github close + merge into gitlab merge
+* Fix debug output
+* add integration tests
+* switch from urllib2 to requests
+
+1.0.0
+-----
+
+* update version
+* encode utf-8 strings before calling urlencode
+* fix example inconsistency
+* First implementation
+* Revert "tmp"
+* tmp
+* first commit

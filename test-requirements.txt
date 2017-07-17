@@ -1,0 +1,11 @@
+hacking
+coverage>=3.6
+sphinx>=1.1.2
+docutils==0.9.1
+discover
+fixtures>=0.3.14
+python-subunit
+testrepository>=0.0.17
+mock
+pytest
+

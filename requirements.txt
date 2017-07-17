@@ -1,0 +1,4 @@
+d2to1
+pbr
+GitPython
+requests
