@@ -164,7 +164,7 @@ class GitHub2GitLab(object):
 
     def gitlab_create_remote(self, repo):
         repo.create_remote('gitlab',
-                           self.gitlab['git'] + ":" +
+                           self.gitlab['git'] + "/" +
                            self.gitlab['namespace'] + "/" +
                            self.gitlab['name'] + ".git")
 
