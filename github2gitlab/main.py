@@ -30,6 +30,7 @@ import six
 from six.moves.urllib import parse
 import subprocess
 import time
+import shutil
 
 DESCRIPTION_MAX = 1024
 
@@ -123,6 +124,9 @@ class GitHub2GitLab(object):
         parser.add_argument('--cache', action='store_const',
                             const=True,
                             help='cache GitHub pull requests list')
+        parser.add_argument('--clean', action='store_const',
+                            const=True,
+                            help='Remove the repo after sync')
         return parser
 
     @staticmethod
@@ -139,6 +143,8 @@ class GitHub2GitLab(object):
             self.merge_requests = self.get_merge_requests()
             self.update_merge_pull()
             self.sync()
+        if self.args.clean:
+            self.clean()
         return 0
 
     def sh(self, command):
@@ -241,6 +247,10 @@ class GitHub2GitLab(object):
                      merge.hexsha)
             repo.git.update_ref('refs/heads/pull/' + pr + '/merge', merge)
 
+    def clean(self):
+        log.info('Removing cloned repo...')
+        shutil.rmtree(self.gitlab['name'])
+
     def add_key(self):
         "Add ssh key to gitlab if necessary"
         try:
@@ -265,7 +275,9 @@ class GitHub2GitLab(object):
             query['key'] = public_key
             result = requests.post(url, query)
             if result.status_code != requests.codes.created:
-                raise ValueError(result.text)
+                log.warn('Key {} already in GitLab. '
+                         'Possible under a different user. Skipping...'
+                         .format(self.args.ssh_public_key))
             return public_key
 
     def add_project(self):
