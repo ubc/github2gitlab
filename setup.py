@@ -20,4 +20,6 @@ import setuptools
 
 setuptools.setup(
     setup_requires=['d2to1', 'pbr'],
-    d2to1=True)
+    d2to1=True,
+    packages=setuptools.find_packages(exclude=['contrib', 'docs', 'tests']),
+)

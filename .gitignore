@@ -1,2 +1,7 @@
 github2gitlab.egg-info
 *.pyc
+hub2lab.egg-info
+build/
+dist/
+.eggs/
+.idea/
