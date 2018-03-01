@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* Rename to hub2lab and add Makefile
 * Bump version to 1.5.6
 * Add --clean option and fix issue using gitlab token from others
 * Add note in readme
