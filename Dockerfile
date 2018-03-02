@@ -1,4 +1,6 @@
-FROM python:2.7-alpine3.6
+FROM python:2.7-alpine3.7
+
+ENV PBR_VERSION=1.5.6
 
 RUN apk add --update --no-cache git
 
