@@ -74,7 +74,7 @@ class GitHub2GitLab(object):
             'host': self.args.gitlab_url,
             'name': self.args.gitlab_name,
             'namespace': self.args.gitlab_namespace,
-            'url': self.args.gitlab_url + "/api/v3",
+            'url': self.args.gitlab_url + "/api/v4",
             'repo': self.args.gitlab_repo,
             'token': self.args.gitlab_token,
         }
@@ -511,14 +511,18 @@ class GitHub2GitLab(object):
         for (key, value) in six.iteritems(query):
             if key == 'private_token':
                 continue
-            if value.strip() != merge.get(key).strip():
+            if value.strip().replace('\n', '').replace('\r', '') != merge.get(key).strip().replace('\n', '').replace('\r', ''):
                 raise ValueError(url + " " + key + " expected " +
                                  value + " but is " + merge.get(key, 'None'))
         return merge
 
     def update_merge_request(self, merge_request, updates):
-        result = self.put_merge_request(merge_request, updates)
-        if (updates.get('state_event') == 'merge' and
+        state_event = updates.pop('state_event', None)
+        if len(updates) == 0 or (len(updates) == 1 and 'private_token' in updates):
+            result = merge_request
+        else:
+            result = self.put_merge_request(merge_request, updates)
+        if (state_event == 'merge' and
                 result['state'] == 'opened'):
             description = result['description'] or ''
             updates = {
@@ -532,8 +536,8 @@ class GitHub2GitLab(object):
     def put_merge_request(self, merge_request, updates):
         g = self.gitlab
         updates['private_token'] = g['token']
-        url = (g['url'] + "/projects/" + g['repo'] + "/merge_request/" +
-               str(merge_request['id']))
+        url = (g['url'] + "/projects/" + g['repo'] + "/merge_requests/" +
+               str(merge_request['iid']))
         log.info('update_merge_request: ' + url + ' <= ' + str(updates))
         return requests.put(url, params=updates).json()
 
