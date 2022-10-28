@@ -1,7 +1,18 @@
 CHANGES
 =======
 
+v1.6.0
+------
+
+* Bump version to 1.6.0
+* Use gitlab API v4
+* Fix the missing version complained by pbr
+* Update readme
 * Rename to hub2lab and add Makefile
+
+v1.5.6
+------
+
 * Bump version to 1.5.6
 * Add --clean option and fix issue using gitlab token from others
 * Add note in readme
