@@ -443,13 +443,22 @@ class GitHub2GitLab(object):
         payloads_file = (self.tmpdir + "/" +
                          hashlib.sha1(url.encode('utf-8')).hexdigest() +
                          ".json")
+        if 'access_token' in query:
+            headers = {"Accept": "application/vnd.github.v3+json",
+                       "Authorization": f'token {query["access_token"]}'
+                       }
+            q = query
+            del q['access_token']
+        else:
+            headers = None
+            q = query
         if (not cache or not os.access(payloads_file, 0) or
                 time.time() - os.stat(payloads_file).st_mtime > 24 * 60 * 60):
             payloads = []
-            next_query = query
+            next_query = q
             while next_query:
                 log.debug(str(next_query))
-                result = requests.get(url, params=next_query)
+                result = requests.get(url, params=next_query, headers=headers)
                 payloads += result.json()
                 next_query = None
                 for link in result.headers.get('Link', '').split(','):
@@ -459,7 +468,7 @@ class GitHub2GitLab(object):
                             parsed_url = parse.urlparse(m.group(1))
                             # append query in case it was not preserved
                             # (gitlab has that problem)
-                            next_query = query
+                            next_query = q
                             next_query.update(
                                 dict(parse.parse_qsl(parsed_url.query))
                             )
@@ -550,7 +559,7 @@ class GitHub2GitLab(object):
                 key = 'state'
                 value = self.STATE_EVENT2MERGE_STATE[updates['state_event']]
             result_value = result.get(key) or ''
-            if value.strip() != result_value.strip():
+            if value.strip().replace('\r', '') != result_value.strip():
                 url = (g['host'] + "/" + parse.unquote(g['repo']) + "/" +
                        "merge_requests/" + str(result['iid']))
                 raise ValueError("{url}: {key} value expected to be {value}"
