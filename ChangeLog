@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+v1.6.1
+------
+
+* Use header for github auth and strip \r for validation
+* Update README for 1.6.0
+
 v1.6.0
 ------
 
